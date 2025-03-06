@@ -1,0 +1,10 @@
+{
+	"name": "AzureDataLakeStorage_imdb",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://damg7370spring25.dfs.core.windows.net/"
+		}
+	}
+}
