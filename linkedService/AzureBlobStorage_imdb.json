@@ -1,0 +1,12 @@
+{
+	"name": "AzureBlobStorage_imdb",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://blobdamg7370.blob.core.windows.net/",
+			"accountKind": "StorageV2"
+		}
+	}
+}
