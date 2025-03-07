@@ -16,14 +16,110 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "SnowflakeV2Source",
-						"exportSettings": {
-							"type": "SnowflakeExportCopyCommand"
+						"type": "ParquetSource",
+						"additionalColumns": [
+							{
+								"name": "DI_JOB_ID",
+								"value": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "DI_CREATED_DT",
+								"value": {
+									"value": "@utcNow()",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": false,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "ParquetReadSettings"
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "SnowflakeV2Sink",
+						"importSettings": {
+							"type": "SnowflakeImportCopyCommand"
+						}
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "imdbBlob",
+							"type": "LinkedServiceReference"
+						},
+						"path": "",
+						"enableCompression": true
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "tconst",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TCONST",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "directors",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DIRECTORS",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "writers",
+									"type": "String"
+								},
+								"sink": {
+									"name": "WRITERS",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "DI_JOB_ID",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DI_JOB_ID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "DI_CREATED_DT",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DI_CREATED_DT",
+									"type": "DateTime"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
+					{
+						"referenceName": "Parquet1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
 					{
 						"referenceName": "SnowflakeTable1",
 						"type": "DatasetReference"
