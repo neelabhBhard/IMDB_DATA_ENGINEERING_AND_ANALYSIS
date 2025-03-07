@@ -48,7 +48,13 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlobStorage_imdb",
+							"type": "LinkedServiceReference"
+						}
+					}
 				},
 				"inputs": [
 					{
