@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "TitleBasicsStaging",
 	"properties": {
 		"activities": [
 			{
@@ -48,7 +48,14 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": true
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "imdbBlob",
+							"type": "LinkedServiceReference"
+						},
+						"enableCompression": true
+					}
 				},
 				"inputs": [
 					{
