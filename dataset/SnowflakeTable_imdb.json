@@ -13,35 +13,23 @@
 				"type": "VARCHAR"
 			},
 			{
-				"name": "TITLETYPE",
+				"name": "ORDERING",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "PRIMARYTITLE",
+				"name": "NCONST",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "ORIGINALTITLE",
+				"name": "CATEGORY",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "ISADULT",
+				"name": "JOB",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "STARTYEAR",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "ENDYEAR",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "RUNTIMEMINUTES",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "GENRES",
+				"name": "CHARACTERS",
 				"type": "VARCHAR"
 			},
 			{
