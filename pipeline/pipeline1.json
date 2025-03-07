@@ -36,7 +36,7 @@
 						],
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -49,7 +49,119 @@
 							"type": "SnowflakeImportCopyCommand"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlobStorage_imdb",
+							"type": "LinkedServiceReference"
+						},
+						"enableCompression": true
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "titleId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TITLEID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "ordering",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ORDERING",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "title",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TITLE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "region",
+									"type": "String"
+								},
+								"sink": {
+									"name": "REGION",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "language",
+									"type": "String"
+								},
+								"sink": {
+									"name": "LANGUAGE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "types",
+									"type": "String"
+								},
+								"sink": {
+									"name": "TYPES",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "attributes",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ATTRIBUTES",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "isOriginalTitle",
+									"type": "String"
+								},
+								"sink": {
+									"name": "ISORIGINALTITLE",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "DI_JOB_ID",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DI_JOB_ID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "DI_LOAD_DT",
+									"type": "String"
+								},
+								"sink": {
+									"name": "DI_CREATED_DT",
+									"type": "DateTime"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
