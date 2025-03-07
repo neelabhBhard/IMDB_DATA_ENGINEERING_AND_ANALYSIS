@@ -39,7 +39,7 @@
 				"     validateSchema: true,",
 				"     format: 'table',",
 				"     partitionBy('roundRobin', 2)) ~> FlatteningTitleBasic",
-				"FlatteningTitleBasic derive(GENRES = split(GENRES,',')) ~> derivedColumn1",
+				"FlatteningTitleBasic derive(GENRES_NEW = split(GENRES,',')) ~> derivedColumn1",
 				"derivedColumn1 foldDown(unroll(GENRES_NEW),",
 				"     mapColumn(",
 				"          GENRES_NEW = GENRES_NEW,",
