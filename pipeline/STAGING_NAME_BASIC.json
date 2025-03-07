@@ -1,9 +1,9 @@
 {
-	"name": "STAGING_EPISODE",
+	"name": "STAGING_NAME_BASIC",
 	"properties": {
 		"activities": [
 			{
-				"name": "IMPORTING_EPISODE",
+				"name": "IMPORTING_NAME_BASIC",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -54,7 +54,8 @@
 							"referenceName": "AzureBlobStorage_imdb",
 							"type": "LinkedServiceReference"
 						},
-						"path": "snowflakestg"
+						"path": "snowflakestg",
+						"enableCompression": true
 					},
 					"translator": {
 						"type": "TabularTranslator",
