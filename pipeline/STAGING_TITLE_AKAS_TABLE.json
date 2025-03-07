@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "STAGING_TITLE_AKAS_TABLE",
 	"properties": {
 		"activities": [
 			{
