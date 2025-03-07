@@ -13,7 +13,14 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "flatten1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          TCONST as string,",
@@ -30,7 +37,16 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: true,",
-				"     format: 'table') ~> FlatteningTitleBasic"
+				"     format: 'table',",
+				"     partitionBy('roundRobin', 2)) ~> FlatteningTitleBasic",
+				"FlatteningTitleBasic derive(GENRES_NEW = split(GENRES,',')) ~> derivedColumn1",
+				"derivedColumn1 foldDown(unroll(GENRES_NEW),",
+				"     mapColumn(",
+				"          GENRES_NEW = GENRES_NEW,",
+				"          TCONST",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1"
 			]
 		}
 	}
