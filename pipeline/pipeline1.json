@@ -17,20 +17,54 @@
 				"typeProperties": {
 					"source": {
 						"type": "ParquetSource",
+						"additionalColumns": [
+							{
+								"name": "di_job_id",
+								"value": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "di_load_dt",
+								"value": {
+									"value": "@utcNow()",
+									"type": "Expression"
+								}
+							}
+						],
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
 							"type": "ParquetReadSettings"
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "SnowflakeV2Sink",
+						"importSettings": {
+							"type": "SnowflakeImportCopyCommand"
+						}
+					},
+					"enableStaging": true,
+					"stagingSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlobStorage1",
+							"type": "LinkedServiceReference"
+						}
+					}
 				},
 				"inputs": [
 					{
 						"referenceName": "Title_basics1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "SnowflakeTable1",
 						"type": "DatasetReference"
 					}
 				]
