@@ -31,7 +31,7 @@
 		],
 		"typeProperties": {
 			"schema": "IMDB_SCHEMA",
-			"table": "STG_TITLE_RATINGS"
+			"table": "STG_TITLE_PRINCIPALS"
 		}
 	}
 }
