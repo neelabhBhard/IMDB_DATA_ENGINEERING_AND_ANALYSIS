@@ -43,11 +43,23 @@
 							"type": "ParquetReadSettings"
 						}
 					},
+					"sink": {
+						"type": "SnowflakeV2Sink",
+						"importSettings": {
+							"type": "SnowflakeImportCopyCommand"
+						}
+					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
 						"referenceName": "Parquet1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "STAGING_TITLE_AKAS",
 						"type": "DatasetReference"
 					}
 				]
