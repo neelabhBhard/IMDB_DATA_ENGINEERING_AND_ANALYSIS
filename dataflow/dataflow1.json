@@ -12,7 +12,15 @@
 					"name": "namebasics"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "STAGINGNAMEBASIC",
+						"type": "DatasetReference"
+					},
+					"name": "LOADINGNAMEBASIC"
+				}
+			],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
@@ -37,20 +45,39 @@
 				"     format: 'table',",
 				"     partitionBy('roundRobin', 2)) ~> namebasics",
 				"namebasics derive(Profession_new = split(PRIMARYPROFESSION, ',')) ~> derivedColumn1",
-				"derivedColumn1 foldDown(unroll(),",
+				"derivedColumn1 foldDown(unroll(Profession_new),",
 				"     mapColumn(",
 				"          NCONST,",
 				"          PRIMARYNAME,",
 				"          BIRTHYEAR,",
 				"          DEATHYEAR,",
-				"          PRIMARYPROFESSION,",
+				"          Profession_new,",
 				"          KNOWNFORTITLES,",
 				"          DI_JOB_ID,",
-				"          DI_CREATED_DT,",
-				"          Profession_new",
+				"          DI_CREATED_DT",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1"
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          NCONST,",
+				"          PRIMARYNAME,",
+				"          BIRTHYEAR,",
+				"          DEATHYEAR,",
+				"          PROFESSION = Profession_new,",
+				"          KNOWNFORTITLES,",
+				"          DI_JOB_ID,",
+				"          DI_CREATED_DT",
+				"     )) ~> LOADINGNAMEBASIC"
 			]
 		}
 	}
