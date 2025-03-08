@@ -12,7 +12,15 @@
 					"name": "FlatteningTitleAkas"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "LOADINGTITLE_CREW_V2",
+						"type": "DatasetReference"
+					},
+					"name": "LoadingTitleCrewV2"
+				}
+			],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
@@ -38,13 +46,30 @@
 				"derivedColumn1 foldDown(unrollMultiple(WRITERS_NEW,DIRECTORS_NEW),",
 				"     mapColumn(",
 				"          TCONST,",
-				"          DIRECTORS_NEW = DIRECTORS_NEW,",
+				"          DIRECTORS_NEW,",
 				"          WRITERS_NEW,",
 				"          DI_JOB_ID,",
 				"          DI_CREATED_DT",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1"
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          TCONST,",
+				"          DIRECTORS_NEW,",
+				"          WRITERS_NEW,",
+				"          DI_JOB_ID,",
+				"          DI_CREATED_DT",
+				"     )) ~> LoadingTitleCrewV2"
 			]
 		}
 	}
