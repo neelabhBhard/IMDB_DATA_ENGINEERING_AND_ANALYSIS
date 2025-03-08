@@ -65,8 +65,8 @@
 				"     stageInsert: true,",
 				"     mapColumn(",
 				"          TCONST,",
-				"          DIRECTORS_NEW,",
-				"          WRITERS_NEW,",
+				"          DIRECTORS = DIRECTORS_NEW,",
+				"          WRITERS = WRITERS_NEW,",
 				"          DI_JOB_ID,",
 				"          DI_CREATED_DT",
 				"     )) ~> LoadingTitleCrewV2"
