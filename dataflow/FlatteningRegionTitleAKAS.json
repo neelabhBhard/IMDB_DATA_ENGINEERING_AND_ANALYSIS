@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "STAGING_TITLE_AKAS",
+						"referenceName": "IMPORTING_TITLE_CREW",
 						"type": "DatasetReference"
 					},
 					"name": "FlatteningTitleAkas"
@@ -23,14 +23,9 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          TITLEID as string,",
-				"          ORDERING as string,",
-				"          TITLE as string,",
-				"          REGION as string,",
-				"          LANGUAGE as string,",
-				"          TYPES as string,",
-				"          ATTRIBUTES as string,",
-				"          ISORIGINALTITLE as string,",
+				"          TCONST as string,",
+				"          DIRECTORS as string,",
+				"          WRITERS as string,",
 				"          DI_JOB_ID as string,",
 				"          DI_CREATED_DT as date",
 				"     ),",
