@@ -10,6 +10,9 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1"
+				},
+				{
+					"name": "source2"
 				}
 			],
 			"sinks": [],
@@ -17,7 +20,9 @@
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> source1"
+				"     format: 'table') ~> source1",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source2"
 			]
 		}
 	}
