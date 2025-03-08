@@ -3,11 +3,56 @@
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "dimregion",
+						"type": "DatasetReference"
+					},
+					"name": "CountryCodesTable"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimRegion1",
+						"type": "DatasetReference"
+					},
+					"name": "DimRegion"
+				}
+			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "surrogateKey1"
+				}
+			],
 			"scriptLines": [
-				""
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> CountryCodesTable",
+				"source(output(",
+				"          REGIONKEY as decimal(10,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT NVL(MAX(REGIONKEY),0) as REGIONKEY from IMDB_SCHEMA.DIMREGION',",
+				"     format: 'query') ~> DimRegion",
+				"CountryCodesTable, DimRegion join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 aggregate(groupBy(code,",
+				"          name),",
+				"     CountRow = count(code)) ~> aggregate1",
+				"aggregate1 keyGenerate(output(RowNum as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1"
 			]
 		}
 	}
