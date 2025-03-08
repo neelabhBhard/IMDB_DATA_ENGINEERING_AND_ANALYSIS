@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "POPULATINGGENREDIM",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -96,7 +96,7 @@
 				"     stageInsert: true,",
 				"     mapColumn(",
 				"          GENREKEY = GENRESK,",
-				"          GENRES = GENRES_NEW,",
+				"          GENRENAME = GENRES_NEW,",
 				"          DI_JOB_ID,",
 				"          DI_CREATED_DT",
 				"     )) ~> LOADINGGENREDIM"
