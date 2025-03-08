@@ -12,11 +12,19 @@
 					"name": "StgTitleBasicV2"
 				},
 				{
-					"name": "source2"
+					"dataset": {
+						"referenceName": "DimTitlenew",
+						"type": "DatasetReference"
+					},
+					"name": "DimTitleN"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "join1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          TCONST as string,",
@@ -34,8 +42,18 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> StgTitleBasicV2",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source2"
+				"source(output(",
+				"          TITLEKEY as decimal(10,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'Select NVL(Max(Titlekey),0) as Titlekey from IMDB_SCHEMA.DIMTITLE',",
+				"     format: 'query') ~> DimTitleN",
+				"StgTitleBasicV2, DimTitleN join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1"
 			]
 		}
 	}
