@@ -1,5 +1,5 @@
 {
-	"name": "FlatteningRegionTitleAKAS",
+	"name": "FlatteningLanguageTitleAkas",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -9,18 +9,11 @@
 						"referenceName": "STAGING_TITLE_AKAS",
 						"type": "DatasetReference"
 					},
-					"name": "FlatteningTitleAkas"
+					"name": "source1"
 				}
 			],
 			"sinks": [],
-			"transformations": [
-				{
-					"name": "derivedColumn1"
-				},
-				{
-					"name": "flatten1"
-				}
-			],
+			"transformations": [],
 			"scriptLines": [
 				"source(output(",
 				"          TITLEID as string,",
@@ -36,16 +29,7 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table',",
-				"     partitionBy('roundRobin', 2)) ~> FlatteningTitleAkas",
-				"FlatteningTitleAkas derive(REGION_NEW = split(REGION,',')) ~> derivedColumn1",
-				"derivedColumn1 foldDown(unroll(REGION_NEW),",
-				"     mapColumn(",
-				"          REGION_NEW = REGION_NEW,",
-				"          TITLEID",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1"
+				"     format: 'table') ~> source1"
 			]
 		}
 	}
