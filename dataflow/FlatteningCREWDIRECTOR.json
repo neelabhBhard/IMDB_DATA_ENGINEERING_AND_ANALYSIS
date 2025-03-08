@@ -1,5 +1,5 @@
 {
-	"name": "FlatteningLanguageTitleAkas",
+	"name": "FlatteningCREWDIRECTOR",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -33,11 +33,11 @@
 				"     validateSchema: false,",
 				"     format: 'table',",
 				"     partitionBy('roundRobin', 2)) ~> source1",
-				"source1 derive(LANGUAGE_NEW = split(LANGUAGE, ',')) ~> derivedColumn1",
-				"derivedColumn1 foldDown(unroll(LANGUAGE_NEW),",
+				"source1 derive(DIRECTOR_NEW = split(DIRECTORS,',')) ~> derivedColumn1",
+				"derivedColumn1 foldDown(unroll(DIRECTOR_NEW),",
 				"     mapColumn(",
-				"          LANGUAGE_NEW = LANGUAGE_NEW,",
-				"          TITLEID",
+				"          DIRECTOR_NEW = DIRECTOR_NEW,",
+				"          TCONST",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1"
