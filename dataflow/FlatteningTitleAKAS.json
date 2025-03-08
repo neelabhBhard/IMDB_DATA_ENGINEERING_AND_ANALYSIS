@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "FlatteningTitleAKAS",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -13,7 +13,14 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "flatten1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          TITLEID as string,",
@@ -29,7 +36,16 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> FlatteningTitleAkas"
+				"     format: 'table',",
+				"     partitionBy('roundRobin', 2)) ~> FlatteningTitleAkas",
+				"FlatteningTitleAkas derive(REGION_NEW = split(REGION,',')) ~> derivedColumn1",
+				"derivedColumn1 foldDown(unroll(REGION_NEW),",
+				"     mapColumn(",
+				"          REGION_NEW = REGION_NEW,",
+				"          TITLEID",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1"
 			]
 		}
 	}
