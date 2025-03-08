@@ -50,7 +50,7 @@
 				"     partitionBy('roundRobin', 2)) ~> derivedColumn1",
 				"derivedColumn1 foldDown(unroll(GENRES_NEW),",
 				"     mapColumn(",
-				"          GENRES_NEW = GENRES_NEW,",
+				"          GENRES = GENRES_NEW,",
 				"          TCONST,",
 				"          TITLETYPE,",
 				"          PRIMARYTITLE,",
