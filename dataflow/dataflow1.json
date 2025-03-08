@@ -1,0 +1,106 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "LOADINGTITLEBASICV2",
+						"type": "DatasetReference"
+					},
+					"name": "LOADINGTITLEBASICV2"
+				},
+				{
+					"dataset": {
+						"referenceName": "LOADINGDIMGENRE",
+						"type": "DatasetReference"
+					},
+					"name": "IMPORTINGDIMGENRE"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "LOADINGDIMGENRE",
+						"type": "DatasetReference"
+					},
+					"name": "LOADINGGENREDIM"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     DI_JOB_ID as string",
+				"}",
+				"source(output(",
+				"          TCONST as string,",
+				"          TITLETYPE as string,",
+				"          PRIMARYTITLE as string,",
+				"          ORIGINALTITLE as string,",
+				"          ISADULT as string,",
+				"          STARTYEAR as string,",
+				"          ENDYEAR as string,",
+				"          RUNTIMEMINUTES as string,",
+				"          GENRES as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> LOADINGTITLEBASICV2",
+				"source(output(",
+				"          MAXGENRESK as decimal(10,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT NVL(MAX(GENREKEY),0) as MAXGENRESK FROM IMDB_SCHEMA.DIMGENRE',",
+				"     format: 'query') ~> IMPORTINGDIMGENRE",
+				"LOADINGTITLEBASICV2, IMPORTINGDIMGENRE join(1 == 1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 aggregate(groupBy(MAXGENRESK,",
+				"          GENRES),",
+				"     COUNT = count(GENRES)) ~> aggregate1",
+				"aggregate1 keyGenerate(output(Rownum as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(GENRESK = MAXGENRESK + Rownum,",
+				"          GENRES_NEW = iif(GENRES == \"\\\\N\" || isNull(GENRES) || GENRES == '', 'UNKNOWN', GENRES),",
+				"          DI_JOB_ID = $DI_JOB_ID,",
+				"          DI_CREATED_DT = currentDate()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          GENREKEY = GENRESK,",
+				"          GENRES = GENRES_NEW,",
+				"          DI_JOB_ID,",
+				"          DI_CREATED_DT",
+				"     )) ~> LOADINGGENREDIM"
+			]
+		}
+	}
+}
