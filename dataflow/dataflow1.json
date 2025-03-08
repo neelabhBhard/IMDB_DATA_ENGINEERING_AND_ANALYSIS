@@ -6,10 +6,10 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable2",
+						"referenceName": "DimTitle",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "StgTitleBasicV2"
 				},
 				{
 					"name": "source2"
@@ -18,9 +18,22 @@
 			"sinks": [],
 			"transformations": [],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          TCONST as string,",
+				"          TITLETYPE as string,",
+				"          PRIMARYTITLE as string,",
+				"          ORIGINALTITLE as string,",
+				"          ISADULT as string,",
+				"          STARTYEAR as string,",
+				"          ENDYEAR as string,",
+				"          RUNTIMEMINUTES as string,",
+				"          GENRES as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> source1",
+				"     format: 'table') ~> StgTitleBasicV2",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false) ~> source2"
 			]
