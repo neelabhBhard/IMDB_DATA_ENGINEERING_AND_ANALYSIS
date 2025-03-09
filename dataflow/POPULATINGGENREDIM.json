@@ -81,7 +81,7 @@
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
 				"surrogateKey1 derive(GENRESK = MAXGENRESK + Rownum,",
-				"          GENRES_NEW = iif(GENRES == \"\\\\N\" || isNull(GENRES) || GENRES == '', 'UNKNOWN', GENRES),",
+				"          GENRES_NEW = iif(GENRES == \"\\\\N\" || isNull(GENRES) || GENRES == '', 'unknown', GENRES),",
 				"          DI_JOB_ID = $DI_JOB_ID,",
 				"          DI_CREATED_DT = currentDate()) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
