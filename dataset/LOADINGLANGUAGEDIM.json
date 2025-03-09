@@ -1,0 +1,16 @@
+{
+	"name": "LOADINGLANGUAGEDIM",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_IMDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "IMDB_SCHEMA",
+			"table": "DIMLANGUAGE"
+		}
+	}
+}
