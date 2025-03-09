@@ -14,7 +14,9 @@
 			},
 			{
 				"name": "ORDERING",
-				"type": "VARCHAR"
+				"type": "NUMBER",
+				"precision": 10,
+				"scale": 0
 			},
 			{
 				"name": "TITLE",
