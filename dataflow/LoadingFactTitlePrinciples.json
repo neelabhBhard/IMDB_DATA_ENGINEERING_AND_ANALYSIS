@@ -9,7 +9,21 @@
 						"referenceName": "ADDINGDIMTITLE",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "DIMTITLE"
+				},
+				{
+					"dataset": {
+						"referenceName": "FACTTITLEPRINCIPLES",
+						"type": "DatasetReference"
+					},
+					"name": "FACTPRINCIPLE"
+				},
+				{
+					"dataset": {
+						"referenceName": "DIMNAME",
+						"type": "DatasetReference"
+					},
+					"name": "DIMNAME"
 				}
 			],
 			"sinks": [],
@@ -30,7 +44,24 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> source1"
+				"     format: 'table') ~> DIMTITLE",
+				"source(output(",
+				"          PRINCIPALKEY as decimal(10,0),",
+				"          TITLEKEY as decimal(10,0),",
+				"          NAMEKEY as string,",
+				"          ORDERING as string,",
+				"          CATEGORY as string,",
+				"          JOB as string,",
+				"          CHARACTERS as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> FACTPRINCIPLE",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> DIMNAME"
 			]
 		}
 	}
