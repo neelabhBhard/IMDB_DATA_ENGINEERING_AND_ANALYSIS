@@ -93,7 +93,7 @@
 				"     stageInsert: true,",
 				"     mapColumn(",
 				"          PROFESSIONKEY,",
-				"          PROFESSION,",
+				"          PROFESSIONNAME = PROFESSION,",
 				"          DI_JOB_ID,",
 				"          DI_CREATED_DT",
 				"     )) ~> DimProfessionLoad"
