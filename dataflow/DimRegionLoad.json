@@ -1,5 +1,5 @@
 {
-	"name": "dataflow2",
+	"name": "DimRegionLoad",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -19,7 +19,15 @@
 					"name": "DimRegion"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DimRegion1",
+						"type": "DatasetReference"
+					},
+					"name": "DimRegionLoad"
+				}
+			],
 			"transformations": [
 				{
 					"name": "join1"
@@ -29,9 +37,15 @@
 				},
 				{
 					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     DI_JOB_ID as string",
+				"}",
 				"source(output(",
 				"          Code as string,",
 				"          Country_name as string",
@@ -40,7 +54,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> CountryCodesTable",
 				"source(output(",
-				"          REGIONKEY as decimal(10,0)",
+				"          MAXREGIONKEY as decimal(10,0)",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -53,11 +67,31 @@
 				"     broadcast: 'auto')~> join1",
 				"join1 aggregate(groupBy(Code,",
 				"          Country_name,",
-				"          REGIONKEY),",
+				"          MAXREGIONKEY),",
 				"     CountRow = count(Code)) ~> aggregate1",
 				"aggregate1 keyGenerate(output(RowNum as long),",
 				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1"
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(REGIONKEY = MAXREGIONKEY + RowNum,",
+				"          DI_JOB_ID = $DI_JOB_ID,",
+				"          DI_CREATED_DT = currentDate()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          REGIONKEY,",
+				"          Code,",
+				"          Country_name,",
+				"          DI_JOB_ID,",
+				"          DI_CREATED_DT",
+				"     )) ~> DimRegionLoad"
 			]
 		}
 	}
