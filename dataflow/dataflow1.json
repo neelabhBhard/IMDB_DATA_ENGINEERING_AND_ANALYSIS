@@ -10,6 +10,20 @@
 						"type": "DatasetReference"
 					},
 					"name": "TitleAkas"
+				},
+				{
+					"dataset": {
+						"referenceName": "IMPORTINGREGIONDIM",
+						"type": "DatasetReference"
+					},
+					"name": "DimRegion"
+				},
+				{
+					"dataset": {
+						"referenceName": "LOADINGLANGUAGEDIM",
+						"type": "DatasetReference"
+					},
+					"name": "DimLanguage"
 				}
 			],
 			"sinks": [],
@@ -29,7 +43,27 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> TitleAkas"
+				"     format: 'table') ~> TitleAkas",
+				"source(output(",
+				"          REGIONKEY as decimal(10,0),",
+				"          REGIONCODE as string,",
+				"          REGIONDESCRIPTION as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> DimRegion",
+				"source(output(",
+				"          LANGUAGEKEY as decimal(10,0),",
+				"          LANGUAGECODE as string,",
+				"          LANGUAGEDESCRIPTION as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> DimLanguage"
 			]
 		}
 	}
