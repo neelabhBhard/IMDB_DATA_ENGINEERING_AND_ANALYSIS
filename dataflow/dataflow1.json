@@ -43,7 +43,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> source1",
-				"source1 derive(GENRES_NEW = iif(GENRES == '//N' || isNull(GENRES) || GENRES == '', 'unknown', GENRES)) ~> derivedColumn1",
+				"source1 derive(GENRES_NEW = iif(GENRES == '\\\\N' || isNull(GENRES) || GENRES == '', 'unknown', GENRES)) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
