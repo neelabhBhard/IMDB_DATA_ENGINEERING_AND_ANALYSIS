@@ -24,6 +24,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "DIMNAME"
+				},
+				{
+					"dataset": {
+						"referenceName": "FACTTITLEPRINCIPLES",
+						"type": "DatasetReference"
+					},
+					"name": "FACTPRINCIPLES"
 				}
 			],
 			"sinks": [],
@@ -60,7 +67,21 @@
 				"     format: 'table') ~> DIMTITLE",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> DIMNAME"
+				"     format: 'table') ~> DIMNAME",
+				"source(output(",
+				"          PRINCIPALKEY as decimal(10,0),",
+				"          TITLEKEY as decimal(10,0),",
+				"          NAMEKEY as string,",
+				"          ORDERING as string,",
+				"          CATEGORY as string,",
+				"          JOB as string,",
+				"          CHARACTERS as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> FACTPRINCIPLES"
 			]
 		}
 	}
