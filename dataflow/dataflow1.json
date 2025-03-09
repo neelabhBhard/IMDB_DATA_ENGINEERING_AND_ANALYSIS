@@ -6,13 +6,6 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "STGTITLEBASICV2",
-						"type": "DatasetReference"
-					},
-					"name": "StgTitleBasicV2"
-				},
-				{
-					"dataset": {
 						"referenceName": "DimTitlenew",
 						"type": "DatasetReference"
 					},
@@ -24,6 +17,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "dimGenre"
+				},
+				{
+					"dataset": {
+						"referenceName": "STGTITLEBASICV2",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -40,22 +40,6 @@
 				}
 			],
 			"scriptLines": [
-				"source(output(",
-				"          TCONST as string,",
-				"          TITLETYPE as string,",
-				"          PRIMARYTITLE as string,",
-				"          ORIGINALTITLE as string,",
-				"          ISADULT as string,",
-				"          STARTYEAR as string,",
-				"          ENDYEAR as string,",
-				"          RUNTIMEMINUTES as string,",
-				"          GENRES as string,",
-				"          DI_JOB_ID as string,",
-				"          DI_CREATED_DT as date",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     format: 'table') ~> StgTitleBasicV2",
 				"source(output(",
 				"          TITLEKEY as decimal(10,0),",
 				"          TCONST as string,",
@@ -81,11 +65,27 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> dimGenre",
-				"StgTitleBasicV2, DimTitle lookup(trim(lower(StgTitleBasicV2@TCONST)) == trim(lower(DimTitle@TCONST)),",
+				"source(output(",
+				"          TCONST as string,",
+				"          TITLETYPE as string,",
+				"          PRIMARYTITLE as string,",
+				"          ORIGINALTITLE as string,",
+				"          ISADULT as string,",
+				"          STARTYEAR as string,",
+				"          ENDYEAR as string,",
+				"          RUNTIMEMINUTES as string,",
+				"          GENRES as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> source1",
+				"DimTitle, source1 lookup(trim(lower(StgTitleBasicV2@TCONST)) == trim(lower(DimTitle@TCONST)),",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
-				"dimGenre, StgTitleBasicV2 lookup(GENRENAME == GENRES,",
+				"dimGenre, source1 lookup(GENRENAME == GENRES,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup2",

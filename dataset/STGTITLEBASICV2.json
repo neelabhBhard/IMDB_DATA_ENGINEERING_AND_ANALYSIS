@@ -55,7 +55,7 @@
 		],
 		"typeProperties": {
 			"schema": "IMDB_SCHEMA",
-			"table": "STG_TITLE_BASICS_V2"
+			"table": "STG_TITLE_BASICS_V3"
 		}
 	}
 }
