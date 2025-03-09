@@ -1,9 +1,9 @@
 {
-	"name": "DIMTITLELOAD",
+	"name": "DIMREGIONLOAD",
 	"properties": {
 		"activities": [
 			{
-				"name": "DIMTITLELOAD",
+				"name": "DimRegionLoad",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -15,6 +15,16 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DimRegionLoad",
+						"type": "DataFlowReference",
+						"parameters": {
+							"DI_JOB_ID": {
+								"value": "'@{pipeline().RunId}'",
+								"type": "Expression"
+							}
+						}
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
