@@ -87,8 +87,8 @@
 				"     stageInsert: true,",
 				"     mapColumn(",
 				"          REGIONKEY,",
-				"          Code,",
-				"          Country_name,",
+				"          REGIONCODE = Code,",
+				"          REGIONDESCRIPTION = Country_name,",
 				"          DI_JOB_ID,",
 				"          DI_CREATED_DT",
 				"     )) ~> DimRegionLoad"
