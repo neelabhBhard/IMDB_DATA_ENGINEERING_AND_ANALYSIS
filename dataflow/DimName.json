@@ -95,7 +95,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     stageInsert: true,",
 				"     mapColumn(",
-				"          NameKey,",
+				"          NAMEKEY = NameKey,",
 				"          NCONST,",
 				"          PRIMARYNAME,",
 				"          BIRTHYEAR,",
