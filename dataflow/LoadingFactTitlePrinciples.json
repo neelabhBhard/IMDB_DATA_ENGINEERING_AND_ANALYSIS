@@ -9,14 +9,14 @@
 						"referenceName": "STAGE_TITLE_PRINCIPLE",
 						"type": "DatasetReference"
 					},
-					"name": "DIMTITLE"
+					"name": "TITLEPRINCIPLE"
 				},
 				{
 					"dataset": {
-						"referenceName": "FACTTITLEPRINCIPLES",
+						"referenceName": "ADDINGDIMTITLE",
 						"type": "DatasetReference"
 					},
-					"name": "FACTPRINCIPLE"
+					"name": "DIMTITLE"
 				},
 				{
 					"dataset": {
@@ -41,21 +41,23 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> DIMTITLE",
+				"     format: 'table') ~> TITLEPRINCIPLE",
 				"source(output(",
-				"          PRINCIPALKEY as decimal(10,0),",
 				"          TITLEKEY as decimal(10,0),",
-				"          NAMEKEY as string,",
-				"          ORDERING as string,",
-				"          CATEGORY as string,",
-				"          JOB as string,",
-				"          CHARACTERS as string,",
+				"          TCONST as string,",
+				"          TITLETYPE as string,",
+				"          PRIMARYTITLE as string,",
+				"          ORIGINALTITLE as string,",
+				"          ISADULT as string,",
+				"          STARTYEAR as string,",
+				"          ENDYEAR as string,",
+				"          RUNTIMEMINUTES as string,",
 				"          DI_JOB_ID as string,",
 				"          DI_CREATED_DT as date",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> FACTPRINCIPLE",
+				"     format: 'table') ~> DIMTITLE",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> DIMNAME"

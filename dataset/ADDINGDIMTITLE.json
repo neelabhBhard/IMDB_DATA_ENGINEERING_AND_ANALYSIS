@@ -54,6 +54,10 @@
 				"name": "DI_CREATED_DT",
 				"type": "DATE"
 			}
-		]
+		],
+		"typeProperties": {
+			"schema": "IMDB_SCHEMA",
+			"table": "DIMTITLE"
+		}
 	}
 }
