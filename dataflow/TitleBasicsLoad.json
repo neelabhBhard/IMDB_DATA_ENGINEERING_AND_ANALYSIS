@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "TitleBasicsLoad",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
