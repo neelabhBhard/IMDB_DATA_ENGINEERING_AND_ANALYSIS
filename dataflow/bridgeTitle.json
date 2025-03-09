@@ -13,7 +13,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "dimgenre",
+						"referenceName": "DIMGENRELatest",
 						"type": "DatasetReference"
 					},
 					"name": "dimGenre"
