@@ -139,7 +139,6 @@
 				"surrogateKey1 derive(BRIDGEKEY = BRIDGEKEY+RowNum,",
 				"          DI_JOB_ID = $DI_JOB_ID,",
 				"          DI_CREATED_DT = currentDate(),",
-				"          GENREKEY = iif(isNull(GENREKEY), 00, toInteger(GENREKEY)),",
 				"          TITLEKEY = iif(isNull(TITLEKEY), 00, toInteger(TITLEKEY))) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
