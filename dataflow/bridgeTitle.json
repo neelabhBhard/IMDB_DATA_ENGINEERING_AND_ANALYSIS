@@ -60,12 +60,6 @@
 				},
 				{
 					"name": "derivedColumn1"
-				},
-				{
-					"name": "filter1"
-				},
-				{
-					"name": "filter2"
 				}
 			],
 			"scriptLines": [
@@ -126,11 +120,11 @@
 				"     pickup: 'any',",
 				"     partitionBy('roundRobin', 2),",
 				"     broadcast: 'auto')~> lookupDimTitle",
-				"filter1, dimGenre lookup(GENRES == GENRENAME,",
+				"lookupDimTitle, dimGenre lookup(GENRES == GENRENAME,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookupDimGenre",
-				"filter2, BridgeTitleGenre join(1==1,",
+				"lookupDimGenre, BridgeTitleGenre join(1==1,",
 				"     joinType:'cross',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
@@ -144,9 +138,9 @@
 				"     stepValue: 1L) ~> surrogateKey1",
 				"surrogateKey1 derive(BRIDGEKEY = BRIDGEKEY+RowNum,",
 				"          DI_JOB_ID = $DI_JOB_ID,",
-				"          DI_CREATED_DT = currentDate()) ~> derivedColumn1",
-				"lookupDimTitle filter(!isNull(TITLEKEY)) ~> filter1",
-				"lookupDimGenre filter(!isNull(GENREKEY)) ~> filter2",
+				"          DI_CREATED_DT = currentDate(),",
+				"          GENREKEY = iif(isNull(GENREKEY), 00, toInteger(GENREKEY)),",
+				"          TITLEKEY = iif(isNull(TITLEKEY), 00, toInteger(TITLEKEY))) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
