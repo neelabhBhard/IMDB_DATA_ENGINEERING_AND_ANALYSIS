@@ -1,0 +1,16 @@
+{
+	"name": "StagingNameBasics",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "IMDB_SCHEMA",
+			"table": "STG_NAME_BASIC_V2"
+		}
+	}
+}
