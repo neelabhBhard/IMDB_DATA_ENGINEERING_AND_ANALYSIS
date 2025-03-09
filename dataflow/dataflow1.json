@@ -30,13 +30,26 @@
 						"referenceName": "ADDINGDIMTITLE",
 						"type": "DatasetReference"
 					},
+					"name": "DimTitle"
+				},
+				{
+					"dataset": {
+						"referenceName": "LoadingBridgeTitleAkas",
+						"type": "DatasetReference"
+					},
 					"name": "source1"
 				}
 			],
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "lookup1"
+					"name": "LookupTitleKey"
+				},
+				{
+					"name": "LookupRegionKey"
+				},
+				{
+					"name": "LanguageLookUp"
 				}
 			],
 			"scriptLines": [
@@ -90,11 +103,23 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> source1",
-				"TitleAkas, DimRegion lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     format: 'table') ~> DimTitle",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT NVL(MAX(',",
+				"     format: 'query') ~> source1",
+				"TitleAkas, DimTitle lookup(trim(lower(TITLEID)) == trim(lower(TCONST)),",
 				"     multiple: false,",
 				"     pickup: 'any',",
-				"     broadcast: 'auto')~> lookup1"
+				"     broadcast: 'auto')~> LookupTitleKey",
+				"LookupTitleKey, DimRegion lookup(REGION == REGIONCODE,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> LookupRegionKey",
+				"LookupRegionKey, DimLanguage lookup(LANGUAGE == LANGUAGECODE,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> LanguageLookUp"
 			]
 		}
 	}
