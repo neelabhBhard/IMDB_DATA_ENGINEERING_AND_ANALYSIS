@@ -27,7 +27,7 @@
 								}
 							},
 							{
-								"name": "DI_LOAD_DT",
+								"name": "DI_CREATED_DT",
 								"value": {
 									"value": "@utcNow()",
 									"type": "Expression"
@@ -77,7 +77,7 @@
 								},
 								"sink": {
 									"name": "ORDERING",
-									"type": "String"
+									"type": "Int64"
 								}
 							},
 							{
@@ -152,7 +152,7 @@
 							},
 							{
 								"source": {
-									"name": "DI_LOAD_DT",
+									"name": "DI_CREATED_DT",
 									"type": "String"
 								},
 								"sink": {
