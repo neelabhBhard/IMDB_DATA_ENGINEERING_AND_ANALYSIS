@@ -189,7 +189,19 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true) ~> sink1"
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          TITLEAKAKEY,",
+				"          TITLEKEY,",
+				"          LANGUAGEKEY,",
+				"          REGIONKEY,",
+				"          ORDERING,",
+				"          TYPES,",
+				"          ATTRIBUTES,",
+				"          ISORIGINALTITLE,",
+				"          DI_JOB_ID,",
+				"          DI_CREATED_DT",
+				"     )) ~> sink1"
 			]
 		}
 	}
