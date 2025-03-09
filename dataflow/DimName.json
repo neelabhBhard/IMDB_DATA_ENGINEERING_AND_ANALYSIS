@@ -20,8 +20,24 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
 			"scriptLines": [
+				"parameters{",
+				"     Di_JOB_ID as string (\"10\")",
+				"}",
 				"source(output(",
 				"          NCONST as string,",
 				"          PRIMARYNAME as string,",
@@ -35,10 +51,29 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> StagingNameBasics",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          MAXNAMEKEY as decimal(10,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     query: 'SELECT NVL(MAX(NAMEKEY),0) as MAXNAMEKEY from IMDB_SCHEMA.DIMNAME',",
-				"     format: 'query') ~> DimName"
+				"     format: 'query') ~> DimName",
+				"StagingNameBasics, DimName join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 aggregate(groupBy(NCONST,",
+				"          PRIMARYNAME,",
+				"          BIRTHYEAR,",
+				"          DEATHYEAR,",
+				"          KNOWNFORTITLES,",
+				"          MAXNAMEKEY),",
+				"     CountRow = count(NCONST)) ~> aggregate1",
+				"aggregate1 keyGenerate(output(RowNum as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(NameKey = MAXNAMEKEY + RowNum) ~> derivedColumn1"
 			]
 		}
 	}
