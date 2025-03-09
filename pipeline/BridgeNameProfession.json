@@ -1,9 +1,9 @@
 {
-	"name": "test",
+	"name": "BridgeNameProfession",
 	"properties": {
 		"activities": [
 			{
-				"name": "Data flow1",
+				"name": "BridgeNameProfession",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -17,7 +17,13 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "BridgeNameProfession",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"parameters": {
+							"DI_JOB_ID": {
+								"value": "'@{pipeline().RunId}'",
+								"type": "Expression"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
