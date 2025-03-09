@@ -26,17 +26,28 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [
-				{
-					"name": "sink1"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "lookup1"
 				},
 				{
 					"name": "lookup2"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "lookup3"
+				},
+				{
+					"name": "filter2"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "filter3"
 				}
 			],
 			"scriptLines": [
@@ -55,7 +66,8 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> DimTitle",
+				"     format: 'table',",
+				"     partitionBy('roundRobin', 2)) ~> DimTitle",
 				"source(output(",
 				"          GENREKEY as decimal(10,0),",
 				"          GENRENAME as string,",
@@ -81,18 +93,38 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> source1",
-				"DimTitle, source1 lookup(trim(lower(StgTitleBasicV2@TCONST)) == trim(lower(DimTitle@TCONST)),",
+				"source1, DimTitle lookup(trim(lower(source1@TCONST)) == trim(lower(DimTitle@TCONST))",
+				"     && trim(lower(source1@TITLETYPE)) == trim(lower(DimTitle@TITLETYPE))",
+				"     && source1@PRIMARYTITLE == DimTitle@PRIMARYTITLE",
+				"     && source1@ORIGINALTITLE == DimTitle@ORIGINALTITLE",
+				"     && source1@ISADULT == DimTitle@ISADULT",
+				"     && source1@STARTYEAR == DimTitle@STARTYEAR",
+				"     && source1@ENDYEAR == DimTitle@ENDYEAR",
+				"     && source1@RUNTIMEMINUTES == DimTitle@RUNTIMEMINUTES,",
 				"     multiple: false,",
 				"     pickup: 'any',",
+				"     partitionBy('roundRobin', 2),",
 				"     broadcast: 'auto')~> lookup1",
 				"dimGenre, source1 lookup(GENRENAME == GENRES,",
 				"     multiple: false,",
 				"     pickup: 'any',",
+				"     partitionBy('roundRobin', 2),",
 				"     broadcast: 'auto')~> lookup2",
-				"lookup1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
+				"lookup1 filter(!isNull(TITLEKEY)) ~> filter1",
+				"select1, dimGenre lookup(GENRES == GENRENAME,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup3",
+				"lookup3 filter(!isNull(GENREKEY)) ~> filter2",
+				"filter1 select(mapColumn(",
+				"          TITLEKEY,",
+				"          TCONST = DimTitle@TCONST,",
+				"          TCONST = source1@TCONST,",
+				"          GENRES",
+				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"lookup2 filter(ERROR_FUNCTION('')) ~> filter3"
 			]
 		}
 	}
