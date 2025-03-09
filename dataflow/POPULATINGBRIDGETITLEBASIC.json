@@ -20,7 +20,11 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "lookup1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          TCONST as string,",
@@ -53,7 +57,11 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> SOURCEDIMTITLE"
+				"     format: 'table') ~> SOURCEDIMTITLE",
+				"TITLEBASICV3, SOURCEDIMTITLE lookup(TITLEBASICV3@TCONST == SOURCEDIMTITLE@TCONST,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1"
 			]
 		}
 	}
