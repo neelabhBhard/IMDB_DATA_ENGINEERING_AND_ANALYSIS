@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "POPULATINGBRIDGETITLEBASIC",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -9,7 +9,14 @@
 						"referenceName": "LOADINGTITLEBASICV3",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "TITLEBASICV3"
+				},
+				{
+					"dataset": {
+						"referenceName": "ADDINGDIMTITLE",
+						"type": "DatasetReference"
+					},
+					"name": "SOURCEDIMTITLE"
 				}
 			],
 			"sinks": [],
@@ -30,7 +37,23 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> source1"
+				"     format: 'table') ~> TITLEBASICV3",
+				"source(output(",
+				"          TITLEKEY as decimal(10,0),",
+				"          TCONST as string,",
+				"          TITLETYPE as string,",
+				"          PRIMARYTITLE as string,",
+				"          ORIGINALTITLE as string,",
+				"          ISADULT as string,",
+				"          STARTYEAR as string,",
+				"          ENDYEAR as string,",
+				"          RUNTIMEMINUTES as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> SOURCEDIMTITLE"
 			]
 		}
 	}
