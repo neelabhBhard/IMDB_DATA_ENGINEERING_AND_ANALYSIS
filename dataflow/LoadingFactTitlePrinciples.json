@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ADDINGDIMTITLE",
+						"referenceName": "STAGE_TITLE_PRINCIPLE",
 						"type": "DatasetReference"
 					},
 					"name": "DIMTITLE"
@@ -30,15 +30,12 @@
 			"transformations": [],
 			"scriptLines": [
 				"source(output(",
-				"          TITLEKEY as decimal(10,0),",
 				"          TCONST as string,",
-				"          TITLETYPE as string,",
-				"          PRIMARYTITLE as string,",
-				"          ORIGINALTITLE as string,",
-				"          ISADULT as string,",
-				"          STARTYEAR as string,",
-				"          ENDYEAR as string,",
-				"          RUNTIMEMINUTES as string,",
+				"          ORDERING as string,",
+				"          NCONST as string,",
+				"          CATEGORY as string,",
+				"          JOB as string,",
+				"          CHARACTERS as string,",
 				"          DI_JOB_ID as string,",
 				"          DI_CREATED_DT as date",
 				"     ),",

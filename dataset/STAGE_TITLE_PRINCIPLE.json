@@ -1,5 +1,5 @@
 {
-	"name": "ADDINGDIMTITLE",
+	"name": "STAGE_TITLE_PRINCIPLE",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Snowflake_IMDB",
@@ -9,41 +9,27 @@
 		"type": "SnowflakeV2Table",
 		"schema": [
 			{
-				"name": "TITLEKEY",
-				"type": "NUMBER",
-				"precision": 10,
-				"scale": 0
-			},
-			{
 				"name": "TCONST",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "TITLETYPE",
+				"name": "ORDERING",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "PRIMARYTITLE",
+				"name": "NCONST",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "ORIGINALTITLE",
+				"name": "CATEGORY",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "ISADULT",
+				"name": "JOB",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "STARTYEAR",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "ENDYEAR",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "RUNTIMEMINUTES",
+				"name": "CHARACTERS",
 				"type": "VARCHAR"
 			},
 			{
@@ -54,6 +40,10 @@
 				"name": "DI_CREATED_DT",
 				"type": "DATE"
 			}
-		]
+		],
+		"typeProperties": {
+			"schema": "IMDB_SCHEMA",
+			"table": "STG_TITLE_PRINCIPALS"
+		}
 	}
 }
