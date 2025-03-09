@@ -3,11 +3,42 @@
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "name_basics",
+						"type": "DatasetReference"
+					},
+					"name": "StagingNameBasics"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimNameLoad",
+						"type": "DatasetReference"
+					},
+					"name": "DimName"
+				}
+			],
 			"sinks": [],
 			"transformations": [],
 			"scriptLines": [
-				""
+				"source(output(",
+				"          NCONST as string,",
+				"          PRIMARYNAME as string,",
+				"          BIRTHYEAR as string,",
+				"          DEATHYEAR as string,",
+				"          PRIMARYPROFESSION as string,",
+				"          KNOWNFORTITLES as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> StagingNameBasics",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT NVL(MAX(NAMEKEY),0) as MAXNAMEKEY from IMDB_SCHEMA.DIMNAME',",
+				"     format: 'query') ~> DimName"
 			]
 		}
 	}
