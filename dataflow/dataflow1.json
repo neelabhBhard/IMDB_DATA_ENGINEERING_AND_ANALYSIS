@@ -26,13 +26,18 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "titleBridge",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "lookup1"
-				},
-				{
-					"name": "lookup2"
 				},
 				{
 					"name": "filter1"
@@ -45,9 +50,6 @@
 				},
 				{
 					"name": "select1"
-				},
-				{
-					"name": "filter3"
 				}
 			],
 			"scriptLines": [
@@ -95,21 +97,11 @@
 				"     format: 'table') ~> source1",
 				"source1, DimTitle lookup(trim(lower(source1@TCONST)) == trim(lower(DimTitle@TCONST))",
 				"     && trim(lower(source1@TITLETYPE)) == trim(lower(DimTitle@TITLETYPE))",
-				"     && source1@PRIMARYTITLE == DimTitle@PRIMARYTITLE",
-				"     && source1@ORIGINALTITLE == DimTitle@ORIGINALTITLE",
-				"     && source1@ISADULT == DimTitle@ISADULT",
-				"     && source1@STARTYEAR == DimTitle@STARTYEAR",
-				"     && source1@ENDYEAR == DimTitle@ENDYEAR",
-				"     && source1@RUNTIMEMINUTES == DimTitle@RUNTIMEMINUTES,",
+				"     && trim(lower(source1@PRIMARYTITLE)) == trim(lower(DimTitle@PRIMARYTITLE)),",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     partitionBy('roundRobin', 2),",
 				"     broadcast: 'auto')~> lookup1",
-				"dimGenre, source1 lookup(GENRENAME == GENRES,",
-				"     multiple: false,",
-				"     pickup: 'any',",
-				"     partitionBy('roundRobin', 2),",
-				"     broadcast: 'auto')~> lookup2",
 				"lookup1 filter(!isNull(TITLEKEY)) ~> filter1",
 				"select1, dimGenre lookup(GENRES == GENRENAME,",
 				"     multiple: false,",
@@ -124,7 +116,28 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"lookup2 filter(ERROR_FUNCTION('')) ~> filter3"
+				"filter2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TITLEKEY as decimal(10,0),",
+				"          GENREKEY as decimal(10,0),",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          TITLEKEY,",
+				"          GENREKEY,",
+				"          DI_JOB_ID,",
+				"          DI_CREATED_DT",
+				"     )) ~> sink1"
 			]
 		}
 	}
