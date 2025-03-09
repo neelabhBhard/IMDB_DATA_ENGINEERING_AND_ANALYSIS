@@ -9,37 +9,23 @@
 		"type": "SnowflakeV2Table",
 		"schema": [
 			{
-				"name": "TITLEAKAKEY",
-				"type": "NUMBER",
-				"precision": 10,
-				"scale": 0
-			},
-			{
-				"name": "TITLEKEY",
-				"type": "NUMBER",
-				"precision": 10,
-				"scale": 0
-			},
-			{
-				"name": "LANGUAGEKEY",
-				"type": "NUMBER",
-				"precision": 10,
-				"scale": 0
-			},
-			{
-				"name": "REGIONKEY",
-				"type": "NUMBER",
-				"precision": 10,
-				"scale": 0
+				"name": "TITLEID",
+				"type": "VARCHAR"
 			},
 			{
 				"name": "ORDERING",
-				"type": "NUMBER",
-				"precision": 10,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
-				"name": "AKATITLE",
+				"name": "TITLE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "REGION",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LANGUAGE",
 				"type": "VARCHAR"
 			},
 			{
@@ -65,7 +51,7 @@
 		],
 		"typeProperties": {
 			"schema": "IMDB_SCHEMA",
-			"table": "BRIDGETITLEAKAS"
+			"table": "STG_TITLE_AKAS"
 		}
 	}
 }
