@@ -19,7 +19,15 @@
 					"name": "DimName"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DimNameLoad",
+						"type": "DatasetReference"
+					},
+					"name": "DimNameLoad"
+				}
+			],
 			"transformations": [
 				{
 					"name": "join1"
@@ -73,7 +81,29 @@
 				"aggregate1 keyGenerate(output(RowNum as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
-				"surrogateKey1 derive(NameKey = MAXNAMEKEY + RowNum) ~> derivedColumn1"
+				"surrogateKey1 derive(NameKey = MAXNAMEKEY + RowNum,",
+				"          DI_JOB_ID = $Di_JOB_ID,",
+				"          DI_CREATED_DT = currentDate()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          NameKey,",
+				"          NCONST,",
+				"          PRIMARYNAME,",
+				"          BIRTHYEAR,",
+				"          DEATHYEAR,",
+				"          KNOWNFORTITLES,",
+				"          DI_JOB_ID,",
+				"          DI_CREATED_DT",
+				"     )) ~> DimNameLoad"
 			]
 		}
 	}
