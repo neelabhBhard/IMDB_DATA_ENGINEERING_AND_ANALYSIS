@@ -6,62 +6,117 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable2",
+						"referenceName": "DimName1",
 						"type": "DatasetReference"
 					},
-					"name": "akas"
+					"name": "DimName"
 				},
 				{
 					"dataset": {
-						"referenceName": "DimTitle",
+						"referenceName": "DimProfession1",
 						"type": "DatasetReference"
 					},
-					"name": "dimtitle"
+					"name": "DimProfession"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable3",
+						"type": "DatasetReference"
+					},
+					"name": "StagingNameBasics"
+				},
+				{
+					"dataset": {
+						"referenceName": "BridgeNameProfession",
+						"type": "DatasetReference"
+					},
+					"name": "BridgeNameProfession"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable4",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
-					"name": "join1"
+					"name": "lookup1"
 				}
 			],
 			"scriptLines": [
 				"source(output(",
-				"          TITLEID as string,",
-				"          ORDERING as decimal(10,0),",
-				"          TITLE as string,",
-				"          REGION as string,",
-				"          LANGUAGE as string,",
-				"          TYPES as string,",
-				"          ATTRIBUTES as string,",
-				"          ISORIGINALTITLE as string,",
+				"          NAMEKEY as decimal(10,0),",
+				"          NCONST as string,",
+				"          PRIMARYNAME as string,",
+				"          BIRTHYEAR as string,",
+				"          DEATHYEAR as string,",
+				"          KNOWNFORTITLES as string,",
 				"          DI_JOB_ID as string,",
 				"          DI_CREATED_DT as date",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> akas",
+				"     format: 'table') ~> DimName",
 				"source(output(",
-				"          TITLEKEY as decimal(10,0),",
-				"          TCONST as string,",
-				"          TITLETYPE as string,",
-				"          PRIMARYTITLE as string,",
-				"          ORIGINALTITLE as string,",
-				"          ISADULT as string,",
-				"          STARTYEAR as string,",
-				"          ENDYEAR as string,",
-				"          RUNTIMEMINUTES as string,",
+				"          PROFESSIONKEY as decimal(10,0),",
+				"          PROFESSIONNAME as string,",
 				"          DI_JOB_ID as string,",
 				"          DI_CREATED_DT as date",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> dimtitle",
-				"akas, dimtitle join(TITLEID == TCONST,",
-				"     joinType:'inner',",
-				"     matchType:'exact',",
-				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join1"
+				"     format: 'table') ~> DimProfession",
+				"source(output(",
+				"          NCONST as string,",
+				"          PRIMARYNAME as string,",
+				"          BIRTHYEAR as string,",
+				"          DEATHYEAR as string,",
+				"          PROFESSION as string,",
+				"          KNOWNFORTITLES as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> StagingNameBasics",
+				"source(output(",
+				"          NAMEKEY as decimal(10,0),",
+				"          NAMEPROFESSIONKEY as decimal(10,0),",
+				"          PROFESSIONKEY as decimal(10,0),",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> BridgeNameProfession",
+				"StagingNameBasics, DimName lookup(StagingNameBasics@NCONST == DimName@NCONST,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          NAMEKEY,",
+				"          NCONST = DimName@NCONST,",
+				"          PRIMARYNAME = DimName@PRIMARYNAME,",
+				"          BIRTHYEAR = DimName@BIRTHYEAR,",
+				"          DEATHYEAR = DimName@DEATHYEAR,",
+				"          KNOWNFORTITLES = DimName@KNOWNFORTITLES,",
+				"          DI_JOB_ID = DimName@DI_JOB_ID,",
+				"          DI_CREATED_DT = DimName@DI_CREATED_DT",
+				"     )) ~> sink1"
 			]
 		}
 	}
