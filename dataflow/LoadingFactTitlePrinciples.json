@@ -36,7 +36,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "LOADINGFACTPRINCIPAL",
+						"referenceName": "LOADFACTPRINCIPAL3",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -149,17 +149,6 @@
 				"          DI_CREATED_DT = currentDate()) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          PRINCIPALKEY as decimal(10,0),",
-				"          TITLEKEY as decimal(10,0),",
-				"          NAMEKEY as decimal(10,0),",
-				"          ORDERING as string,",
-				"          CATEGORY as string,",
-				"          JOB as string,",
-				"          CHARACTERS as string,",
-				"          DI_JOB_ID as string,",
-				"          DI_CREATED_DT as date",
-				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",
@@ -176,7 +165,7 @@
 				"          CATEGORY,",
 				"          JOB,",
 				"          CHARACTERS,",
-				"          DI_JOB_ID = DI_LOAD_ID,",
+				"          DI_LOAD_ID,",
 				"          DI_CREATED_DT",
 				"     )) ~> sink1"
 			]
