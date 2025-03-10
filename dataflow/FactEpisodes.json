@@ -1,0 +1,168 @@
+{
+	"name": "FactEpisodes",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "stagingTitleEpiosdes",
+						"type": "DatasetReference"
+					},
+					"name": "StagingTitleEpisodes"
+				},
+				{
+					"dataset": {
+						"referenceName": "FactEpisodes",
+						"type": "DatasetReference"
+					},
+					"name": "FactEpisodes"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimTitle",
+						"type": "DatasetReference"
+					},
+					"name": "DimTitle"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "FactEpisodes",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "lookup2"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn3"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     DI_JOB_ID as string",
+				"}",
+				"source(output(",
+				"          TCONST as string,",
+				"          PARENTTCONST as string,",
+				"          SEASONNUMBER as string,",
+				"          EPISODENUMBER as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> StagingTitleEpisodes",
+				"source(output(",
+				"          EPISODEKEY as decimal(10,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'select NVL(max(EPISODEKEY),0) AS EPISODEKEY FROM IMDB_SCHEMA.FACTEPISODES',",
+				"     format: 'query') ~> FactEpisodes",
+				"source(output(",
+				"          TITLEKEY as decimal(10,0),",
+				"          TCONST as string,",
+				"          TITLETYPE as string,",
+				"          PRIMARYTITLE as string,",
+				"          ORIGINALTITLE as string,",
+				"          ISADULT as string,",
+				"          STARTYEAR as string,",
+				"          ENDYEAR as string,",
+				"          RUNTIMEMINUTES as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> DimTitle",
+				"StagingTitleEpisodes, DimTitle lookup(StagingTitleEpisodes@TCONST == DimTitle@TCONST,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"derivedColumn2, FactEpisodes join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 aggregate(groupBy(SEASONNUMBER,",
+				"          EPISODENUMBER,",
+				"          EPISODEKEY,",
+				"          TITLEKEY,",
+				"          EPISODETITLEKEY,",
+				"          PARENTTITLEKEY),",
+				"     CountRow = count(TITLEKEY)) ~> aggregate1",
+				"lookup1 derive(EPISODETITLEKEY = TITLEKEY) ~> derivedColumn1",
+				"select1, DimTitle lookup(PARENTTCONST == DimTitle@TCONST,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup2",
+				"derivedColumn1 select(mapColumn(",
+				"          TCONST = StagingTitleEpisodes@TCONST,",
+				"          PARENTTCONST,",
+				"          SEASONNUMBER,",
+				"          EPISODENUMBER,",
+				"          EPISODETITLEKEY",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"lookup2 derive(PARENTTITLEKEY = TITLEKEY) ~> derivedColumn2",
+				"aggregate1 keyGenerate(output(RowNum as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(EPISODEKEY = EPISODEKEY+RowNum,",
+				"          DI_JOB_ID = $DI_JOB_ID,",
+				"          DI_CREATED_DT = currentDate(),",
+				"          TITLEKEY = iif(isNull(TITLEKEY),00,toInteger(TITLEKEY)),",
+				"          EPISODETITLEKEY = iif(isNull(EPISODETITLEKEY),00,toInteger(EPISODETITLEKEY)),",
+				"          PARENTTITLEKEY = iif(isNull(PARENTTITLEKEY),00,toInteger(PARENTTITLEKEY))) ~> derivedColumn3",
+				"derivedColumn3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          SEASONNUMBER,",
+				"          EPISODENUMBER,",
+				"          EPISODEKEY,",
+				"          TITLEKEY,",
+				"          EPISODETITLEKEY,",
+				"          PARENTTITLEKEY,",
+				"          DI_JOB_ID,",
+				"          DI_CREATED_DT",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
