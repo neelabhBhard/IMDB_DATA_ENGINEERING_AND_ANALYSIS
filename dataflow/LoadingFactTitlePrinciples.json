@@ -36,7 +36,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "FACTTITLEPRINCIPLES",
+						"referenceName": "LOADINGFACTPRINCIPAL",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -132,12 +132,12 @@
 				"     broadcast: 'auto')~> join2",
 				"join2 select(mapColumn(",
 				"          PRINCIPLESK,",
+				"          TITLEKEY,",
+				"          NAMEKEY,",
 				"          ORDERING,",
 				"          CATEGORY,",
 				"          JOB,",
-				"          CHARACTERS,",
-				"          TITLEKEY,",
-				"          NAMEKEY",
+				"          CHARACTERS",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
@@ -152,7 +152,7 @@
 				"     input(",
 				"          PRINCIPALKEY as decimal(10,0),",
 				"          TITLEKEY as decimal(10,0),",
-				"          NAMEKEY as string,",
+				"          NAMEKEY as decimal(10,0),",
 				"          ORDERING as string,",
 				"          CATEGORY as string,",
 				"          JOB as string,",
@@ -176,6 +176,7 @@
 				"          CATEGORY,",
 				"          JOB,",
 				"          CHARACTERS,",
+				"          DI_JOB_ID = DI_LOAD_ID,",
 				"          DI_CREATED_DT",
 				"     )) ~> sink1"
 			]
