@@ -27,7 +27,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "LOADINGFACTPRINCIPAL",
+						"referenceName": "FACTPRINCIPALV1",
 						"type": "DatasetReference"
 					},
 					"name": "FACTPRINCIPLES"
@@ -113,7 +113,7 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     query: 'SELECT NVL(MAX(PRINCIPALKEY),0) AS PRINCIPLESK FROM FactTitlePrincipals',",
+				"     query: 'SELECT NVL(MAX(PRINCIPALKEY),0) AS PRINCIPLESK FROM FACTTITLEPRINCIPALS',",
 				"     format: 'query') ~> FACTPRINCIPLES",
 				"TITLEPRINCIPLE, DIMTITLE join(TITLEPRINCIPLE@TCONST == DIMTITLE@TCONST,",
 				"     joinType:'inner',",
