@@ -27,7 +27,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "FACTTITLEPRINCIPLES",
+						"referenceName": "LOADINGFACTPRINCIPAL",
 						"type": "DatasetReference"
 					},
 					"name": "FACTPRINCIPLES"
@@ -167,7 +167,17 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true) ~> sink1"
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          PRINCIPALKEY = PRINCIPLESK,",
+				"          TITLEKEY,",
+				"          NAMEKEY,",
+				"          ORDERING,",
+				"          CATEGORY,",
+				"          JOB,",
+				"          CHARACTERS,",
+				"          DI_CREATED_DT",
+				"     )) ~> sink1"
 			]
 		}
 	}
