@@ -55,6 +55,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     DI_LOAD_ID as string",
+				"}",
 				"source(output(",
 				"          TCONST as string,",
 				"          ORDERING as string,",
@@ -133,7 +136,9 @@
 				"select1 keyGenerate(output(ROWNUM as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
-				"surrogateKey1 derive(PRINCIPLESK = PRINCIPLESK + ROWNUM) ~> derivedColumn1"
+				"surrogateKey1 derive(PRINCIPLESK = PRINCIPLESK + ROWNUM,",
+				"          DI_LOAD_ID = $DI_LOAD_ID,",
+				"          DI_CREATED_DT = currentDate()) ~> derivedColumn1"
 			]
 		}
 	}
