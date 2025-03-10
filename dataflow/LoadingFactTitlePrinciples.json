@@ -36,7 +36,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "LOADFACTPRINCIPAL3",
+						"referenceName": "FACTPRINCIPALV1",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
