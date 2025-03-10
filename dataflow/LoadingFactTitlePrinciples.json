@@ -165,7 +165,7 @@
 				"          CATEGORY,",
 				"          JOB,",
 				"          CHARACTERS,",
-				"          DI_LOAD_ID,",
+				"          DI_JOB_ID = DI_LOAD_ID,",
 				"          DI_CREATED_DT",
 				"     )) ~> sink1"
 			]
