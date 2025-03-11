@@ -3,11 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-
-				"name": "DimNameLoad",
-
 				"name": "FlattenTitleBasic",
-
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -20,19 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-
-						"referenceName": "DimName",
-						"type": "DataFlowReference",
-						"parameters": {
-							"Di_JOB_ID": {
-								"value": "'@{pipeline().RunId}'",
-								"type": "Expression"
-							}
-						}
-
 						"referenceName": "FlattenTitleBasic",
 						"type": "DataFlowReference"
-
 					},
 					"compute": {
 						"coreCount": 8,

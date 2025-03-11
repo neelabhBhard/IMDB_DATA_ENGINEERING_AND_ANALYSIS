@@ -2,11 +2,7 @@
 	"name": "Parquet1",
 	"properties": {
 		"linkedServiceName": {
-
-			"referenceName": "AzureDataLakeStorage2",
-
 			"referenceName": "IMPORT_TITLE_AKAS",
-
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -14,18 +10,11 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-
-				"fileName": "title_crews1.parquet",
-
 				"fileName": "Title_Akas_Cleaned1.parquet",
-
 				"fileSystem": "silver"
 			},
 			"compressionCodec": "snappy"
 		},
-
-		"schema": []
-
 		"schema": [
 			{
 				"name": "titleId",
@@ -60,6 +49,5 @@
 				"type": "UTF8"
 			}
 		]
-
 	}
 }
