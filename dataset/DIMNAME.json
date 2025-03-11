@@ -1,57 +1,37 @@
 {
-	"name": "DimTitle",
+	"name": "DIMNAME",
 	"properties": {
 		"linkedServiceName": {
-
-			"referenceName": "Snowflake1",
-
 			"referenceName": "Snowflake_IMDB",
-
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "SnowflakeV2Table",
-
-		"schema": [],
-		"typeProperties": {
-			"schema": "IMDB_SCHEMA",
-			"table": "DIMTITLE"
-
 		"schema": [
 			{
-				"name": "TCONST",
+				"name": "NAMEKEY",
+				"type": "NUMBER",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "NCONST",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "TITLETYPE",
+				"name": "PRIMARYNAME",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "PRIMARYTITLE",
+				"name": "BIRTHYEAR",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "ORIGINALTITLE",
+				"name": "DEATHYEAR",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "ISADULT",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "STARTYEAR",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "ENDYEAR",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "RUNTIMEMINUTES",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "GENRES",
+				"name": "KNOWNFORTITLES",
 				"type": "VARCHAR"
 			},
 			{
@@ -65,8 +45,7 @@
 		],
 		"typeProperties": {
 			"schema": "IMDB_SCHEMA",
-			"table": "STG_TITLE_BASICS_V2"
-
+			"table": "DIMNAME"
 		}
 	}
 }

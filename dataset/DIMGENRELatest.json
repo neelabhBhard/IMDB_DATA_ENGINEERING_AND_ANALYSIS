@@ -1,12 +1,8 @@
 {
-	"name": "SnowflakeTable2",
+	"name": "DIMGENRELatest",
 	"properties": {
 		"linkedServiceName": {
-
-			"referenceName": "Snowflake1",
-
 			"referenceName": "Snowflake_IMDB",
-
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -14,11 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "IMDB_SCHEMA",
-
-			"table": "STG_TITLE_AKAS"
-
-			"table": "STG_TITLE_BASICS_V2"
-
+			"table": "DIMGENRE"
 		}
 	}
 }

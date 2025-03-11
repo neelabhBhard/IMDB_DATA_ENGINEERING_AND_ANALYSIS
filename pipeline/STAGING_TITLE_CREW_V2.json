@@ -1,13 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "STAGING_TITLE_CREW_V2",
 	"properties": {
 		"activities": [
 			{
-
-				"name": "DimNameLoad",
-
-				"name": "FlattenTitleBasic",
-
+				"name": "LOADINGTITLECREWV2",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -20,19 +16,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-
-						"referenceName": "DimName",
-						"type": "DataFlowReference",
-						"parameters": {
-							"Di_JOB_ID": {
-								"value": "'@{pipeline().RunId}'",
-								"type": "Expression"
-							}
-						}
-
-						"referenceName": "FlattenTitleBasic",
+						"referenceName": "FlatteningRegionTitleAKAS",
 						"type": "DataFlowReference"
-
+					},
+					"staging": {
+						"folderPath": ""
 					},
 					"compute": {
 						"coreCount": 8,

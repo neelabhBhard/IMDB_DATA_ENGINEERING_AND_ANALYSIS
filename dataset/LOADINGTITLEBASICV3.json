@@ -1,22 +1,12 @@
 {
-	"name": "DimTitle",
+	"name": "LOADINGTITLEBASICV3",
 	"properties": {
 		"linkedServiceName": {
-
-			"referenceName": "Snowflake1",
-
 			"referenceName": "Snowflake_IMDB",
-
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "SnowflakeV2Table",
-
-		"schema": [],
-		"typeProperties": {
-			"schema": "IMDB_SCHEMA",
-			"table": "DIMTITLE"
-
 		"schema": [
 			{
 				"name": "TCONST",
@@ -65,8 +55,7 @@
 		],
 		"typeProperties": {
 			"schema": "IMDB_SCHEMA",
-			"table": "STG_TITLE_BASICS_V2"
-
+			"table": "STG_TITLE_BASICS_V3"
 		}
 	}
 }

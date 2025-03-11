@@ -1,12 +1,8 @@
 {
-	"name": "Parquet1",
+	"name": "STAGING_NAME_BASIC",
 	"properties": {
 		"linkedServiceName": {
-
-			"referenceName": "AzureDataLakeStorage2",
-
-			"referenceName": "IMPORT_TITLE_AKAS",
-
+			"referenceName": "AzureDataLakeStorage_imdb",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -14,52 +10,36 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-
-				"fileName": "title_crews1.parquet",
-
-				"fileName": "Title_Akas_Cleaned1.parquet",
-
+				"fileName": "Name_Basics_Cleaned1.parquet",
 				"fileSystem": "silver"
 			},
 			"compressionCodec": "snappy"
 		},
-
-		"schema": []
-
 		"schema": [
 			{
-				"name": "titleId",
+				"name": "nconst",
 				"type": "UTF8"
 			},
 			{
-				"name": "ordering",
+				"name": "primaryName",
 				"type": "UTF8"
 			},
 			{
-				"name": "title",
+				"name": "birthYear",
 				"type": "UTF8"
 			},
 			{
-				"name": "region",
+				"name": "deathYear",
 				"type": "UTF8"
 			},
 			{
-				"name": "language",
+				"name": "primaryProfession",
 				"type": "UTF8"
 			},
 			{
-				"name": "types",
-				"type": "UTF8"
-			},
-			{
-				"name": "attributes",
-				"type": "UTF8"
-			},
-			{
-				"name": "isOriginalTitle",
+				"name": "knownForTitles",
 				"type": "UTF8"
 			}
 		]
-
 	}
 }

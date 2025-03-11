@@ -1,12 +1,8 @@
 {
-	"name": "Parquet1",
+	"name": "Parquet_imdb",
 	"properties": {
 		"linkedServiceName": {
-
-			"referenceName": "AzureDataLakeStorage2",
-
-			"referenceName": "IMPORT_TITLE_AKAS",
-
+			"referenceName": "AzureDataLakeStorage_imdb",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -14,52 +10,40 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-
-				"fileName": "title_crews1.parquet",
-
-				"fileName": "Title_Akas_Cleaned1.parquet",
-
+				"fileName": "title_ratings_cleaned1.parquet",
 				"fileSystem": "silver"
 			},
 			"compressionCodec": "snappy"
 		},
-
-		"schema": []
-
 		"schema": [
 			{
-				"name": "titleId",
+				"name": "License_Issue_Date",
 				"type": "UTF8"
 			},
 			{
-				"name": "ordering",
+				"name": "License_Number",
 				"type": "UTF8"
 			},
 			{
-				"name": "title",
+				"name": "Animals_Name",
 				"type": "UTF8"
 			},
 			{
-				"name": "region",
+				"name": "Species",
 				"type": "UTF8"
 			},
 			{
-				"name": "language",
+				"name": "Primary_Breed",
 				"type": "UTF8"
 			},
 			{
-				"name": "types",
+				"name": "Secondary_Breed",
 				"type": "UTF8"
 			},
 			{
-				"name": "attributes",
-				"type": "UTF8"
-			},
-			{
-				"name": "isOriginalTitle",
+				"name": "ZIP_Code",
 				"type": "UTF8"
 			}
 		]
-
 	}
 }

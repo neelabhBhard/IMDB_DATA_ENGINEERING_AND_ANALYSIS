@@ -1,57 +1,43 @@
 {
-	"name": "DimTitle",
+	"name": "FACTTITLEPRINCIPLES",
 	"properties": {
 		"linkedServiceName": {
-
-			"referenceName": "Snowflake1",
-
 			"referenceName": "Snowflake_IMDB",
-
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "SnowflakeV2Table",
-
-		"schema": [],
-		"typeProperties": {
-			"schema": "IMDB_SCHEMA",
-			"table": "DIMTITLE"
-
 		"schema": [
 			{
-				"name": "TCONST",
+				"name": "PRINCIPALKEY",
+				"type": "NUMBER",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "TITLEKEY",
+				"type": "NUMBER",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "NAMEKEY",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "TITLETYPE",
+				"name": "ORDERING",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "PRIMARYTITLE",
+				"name": "CATEGORY",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "ORIGINALTITLE",
+				"name": "JOB",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "ISADULT",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "STARTYEAR",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "ENDYEAR",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "RUNTIMEMINUTES",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "GENRES",
+				"name": "CHARACTERS",
 				"type": "VARCHAR"
 			},
 			{
@@ -65,8 +51,7 @@
 		],
 		"typeProperties": {
 			"schema": "IMDB_SCHEMA",
-			"table": "STG_TITLE_BASICS_V2"
-
+			"table": "FACTTITLEPRINCIPALS"
 		}
 	}
 }

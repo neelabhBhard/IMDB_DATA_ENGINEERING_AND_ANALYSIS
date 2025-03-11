@@ -1,23 +1,19 @@
 {
-	"name": "DimTitle",
+	"name": "DimTitlenew",
 	"properties": {
 		"linkedServiceName": {
-
-			"referenceName": "Snowflake1",
-
 			"referenceName": "Snowflake_IMDB",
-
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "SnowflakeV2Table",
-
-		"schema": [],
-		"typeProperties": {
-			"schema": "IMDB_SCHEMA",
-			"table": "DIMTITLE"
-
 		"schema": [
+			{
+				"name": "TITLEKEY",
+				"type": "NUMBER",
+				"precision": 10,
+				"scale": 0
+			},
 			{
 				"name": "TCONST",
 				"type": "VARCHAR"
@@ -51,10 +47,6 @@
 				"type": "VARCHAR"
 			},
 			{
-				"name": "GENRES",
-				"type": "VARCHAR"
-			},
-			{
 				"name": "DI_JOB_ID",
 				"type": "VARCHAR"
 			},
@@ -65,8 +57,7 @@
 		],
 		"typeProperties": {
 			"schema": "IMDB_SCHEMA",
-			"table": "STG_TITLE_BASICS_V2"
-
+			"table": "DIMTITLE"
 		}
 	}
 }

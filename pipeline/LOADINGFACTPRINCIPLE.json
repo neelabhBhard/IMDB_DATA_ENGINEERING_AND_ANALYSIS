@@ -1,13 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "LOADINGFACTPRINCIPLE",
 	"properties": {
 		"activities": [
 			{
-
-				"name": "DimNameLoad",
-
-				"name": "FlattenTitleBasic",
-
+				"name": "LOADINGFACTPRINCIPAL",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -20,19 +16,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-
-						"referenceName": "DimName",
+						"referenceName": "LoadingFactTitlePrinciples",
 						"type": "DataFlowReference",
 						"parameters": {
-							"Di_JOB_ID": {
+							"DI_LOAD_ID": {
 								"value": "'@{pipeline().RunId}'",
 								"type": "Expression"
 							}
 						}
-
-						"referenceName": "FlattenTitleBasic",
-						"type": "DataFlowReference"
-
 					},
 					"compute": {
 						"coreCount": 8,
