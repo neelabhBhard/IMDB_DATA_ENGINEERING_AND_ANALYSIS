@@ -1,5 +1,6 @@
 {
 	"name": "AzureDataLakeStorage_imdb",
+
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
