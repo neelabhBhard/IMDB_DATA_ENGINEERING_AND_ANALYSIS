@@ -1,12 +1,11 @@
 {
-	"name": "AzureDataLakeStorage_imdb",
-
+	"name": "AzureKeyVault2",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
-		"type": "AzureBlobFS",
+		"type": "AzureKeyVault",
 		"typeProperties": {
-			"url": "https://damg7370spring25.dfs.core.windows.net/"
+			"baseUrl": "https://damg7370kvspring25.vault.azure.net/"
 		}
 	}
 }

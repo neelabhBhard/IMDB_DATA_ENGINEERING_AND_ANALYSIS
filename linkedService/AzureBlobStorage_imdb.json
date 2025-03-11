@@ -1,0 +1,12 @@
+{
+	"name": "AzureBlobStorage_imdb",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"sasUri": "https://blobdamg7370.blob.core.windows.net/",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEUwQzBDQUEwLURFN0ItNDc3RC04OUU1LTUwRTY0QzRERTVFM182ZDcxZmNiMC0xYTdlLTQ4YjctODA3NS1lZTE3ZDMwYjVlMzEiDQp9"
+		}
+	}
+}
