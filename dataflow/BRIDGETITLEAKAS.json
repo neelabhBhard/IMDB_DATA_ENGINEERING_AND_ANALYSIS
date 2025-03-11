@@ -1,0 +1,212 @@
+{
+	"name": "BRIDGETITLEAKAS",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "IMPORTINGTITLEAKAS2",
+						"type": "DatasetReference"
+					},
+					"name": "TitleAkas"
+				},
+				{
+					"dataset": {
+						"referenceName": "IMPORTINGREGIONDIM",
+						"type": "DatasetReference"
+					},
+					"name": "DimRegion"
+				},
+				{
+					"dataset": {
+						"referenceName": "LOADINGLANGUAGEDIM",
+						"type": "DatasetReference"
+					},
+					"name": "DimLanguage"
+				},
+				{
+					"dataset": {
+						"referenceName": "ADDINGDIMTITLE",
+						"type": "DatasetReference"
+					},
+					"name": "DimTitle"
+				},
+				{
+					"dataset": {
+						"referenceName": "LoadingBridgeTitleAkas",
+						"type": "DatasetReference"
+					},
+					"name": "BRIDGETITLEAKAS"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "LoadingBridgeTitleAkas",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "LookupTitleKey"
+				},
+				{
+					"name": "LookupRegionKey"
+				},
+				{
+					"name": "LanguageLookUp"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     DI_JOB_ID as string",
+				"}",
+				"source(output(",
+				"          TITLEID as string,",
+				"          ORDERING as decimal(10,0),",
+				"          TITLE as string,",
+				"          REGION as string,",
+				"          LANGUAGE as string,",
+				"          TYPES as string,",
+				"          ATTRIBUTES as string,",
+				"          ISORIGINALTITLE as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     limit: 1000000,",
+				"     format: 'table') ~> TitleAkas",
+				"source(output(",
+				"          REGIONKEY as decimal(10,0),",
+				"          REGIONCODE as string,",
+				"          REGIONDESCRIPTION as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> DimRegion",
+				"source(output(",
+				"          LANGUAGEKEY as decimal(10,0),",
+				"          LANGUAGECODE as string,",
+				"          LANGUAGEDESCRIPTION as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> DimLanguage",
+				"source(output(",
+				"          TITLEKEY as decimal(10,0),",
+				"          TCONST as string,",
+				"          TITLETYPE as string,",
+				"          PRIMARYTITLE as string,",
+				"          ORIGINALTITLE as string,",
+				"          ISADULT as string,",
+				"          STARTYEAR as string,",
+				"          ENDYEAR as string,",
+				"          RUNTIMEMINUTES as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> DimTitle",
+				"source(output(",
+				"          TITLEAKAKEY as decimal(10,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT NVL(MAX(TITLEAKAKEY),0) AS TITLEAKAKEY FROM IMDB_SCHEMA.BRIDGETITLEAKAS',",
+				"     format: 'query') ~> BRIDGETITLEAKAS",
+				"TitleAkas, DimTitle lookup(trim(lower(TITLEID)) == trim(lower(TCONST)),",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> LookupTitleKey",
+				"LookupTitleKey, DimRegion lookup(REGION == REGIONCODE,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> LookupRegionKey",
+				"LookupRegionKey, DimLanguage lookup(LANGUAGE == LANGUAGECODE,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> LanguageLookUp",
+				"LanguageLookUp, BRIDGETITLEAKAS join(1 == 1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 aggregate(groupBy(TITLEAKAKEY,",
+				"          TITLEKEY,",
+				"          LANGUAGEKEY,",
+				"          REGIONKEY,",
+				"          ORDERING,",
+				"          TITLE,",
+				"          TYPES,",
+				"          ATTRIBUTES,",
+				"          ISORIGINALTITLE),",
+				"     TITLE_NEW = count(TITLEID)) ~> aggregate1",
+				"aggregate1 keyGenerate(output(ROWNUM as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(TITLEAKAKEY = TITLEAKAKEY + ROWNUM,",
+				"          DI_JOB_ID = $DI_JOB_ID,",
+				"          DI_CREATED_DT = currentDate(),",
+				"          LANGUAGEKEY = iif(isNull(LANGUAGEKEY), 00, toInteger(LANGUAGEKEY)),",
+				"          REGIONKEY = iif(isNull(REGIONKEY), 00, toInteger(REGIONKEY))) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TITLEAKAKEY as decimal(10,0),",
+				"          TITLEKEY as decimal(10,0),",
+				"          LANGUAGEKEY as decimal(10,0),",
+				"          REGIONKEY as decimal(10,0),",
+				"          ORDERING as decimal(10,0),",
+				"          AKATITLE as string,",
+				"          TYPES as string,",
+				"          ATTRIBUTES as string,",
+				"          ISORIGINALTITLE as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_CREATED_DT as date",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          TITLEAKAKEY,",
+				"          TITLEKEY,",
+				"          LANGUAGEKEY,",
+				"          REGIONKEY,",
+				"          ORDERING,",
+				"          AKATITLE = TITLE,",
+				"          TYPES,",
+				"          ATTRIBUTES,",
+				"          ISORIGINALTITLE,",
+				"          DI_JOB_ID,",
+				"          DI_CREATED_DT",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
